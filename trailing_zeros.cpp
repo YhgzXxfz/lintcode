@@ -1,4 +1,4 @@
-ass Solution {
+class Solution {
     /*
      * param n: As desciption
      * return: An integer, denote the number of trailing zeros in n!
