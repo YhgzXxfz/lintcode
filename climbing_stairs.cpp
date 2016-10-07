@@ -6,16 +6,16 @@ public:
      */
     int climbStairs(int n) {
         // write your code here
-        if (n == 0) return 1;
-        if (n <= 3) return n;
+        vector<int> steps(3, 0);
         
-        int f1 = 1, f2 = 2;
-        for (int i = 2; i < n; ++i) {
-            f2 = f1 + f2;
-            f1 = f2 - f1;
+        steps[0] = 1;
+        steps[1] = 1;
+        for (int i = 2; i <= n; ++i) {
+            steps[i%3] = steps[(i-1)%3] + steps[(i-2)%3];
         }
-        return f2;
+        return steps[n%3];
     }
 };
 
+ 
 
