@@ -6,12 +6,10 @@ public:
      */
     string minNumber(vector<int>& nums) {
         // Write your code here
-        auto comp = [](int a, int b) { 
-            string string_a = to_string(a);
-            string string_b = to_string(b);
-            return string_a+string_b < string_b+string_a;
+        auto comp = [](int i1, int i2) { 
+            return to_string(i1) + to_string(i2) < to_string(i2) + to_string(i1);
         };
-        sort(nums.begin(), nums.end(), comp);
+	sort(nums.begin(), nums.end(), comp);
         
         string result = "";
         for (auto num : nums) {
