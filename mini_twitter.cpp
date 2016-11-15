@@ -1,5 +1,5 @@
 /**
- * Defition of Tweet:
+ * Definition of Tweet:
  * class Tweet {
  * public:
  *     int id;
@@ -15,7 +15,6 @@ class MiniTwitter {
 public:
     MiniTwitter() {
         // initialize your data structure here.
-        
     }
 
     // @param user_id an integer
@@ -24,7 +23,7 @@ public:
     Tweet postTweet(int user_id, string tweet_text) {
         //  Write your code here
         Tweet tw = Tweet::create(user_id, tweet_text);
-        messageQueue.push_back(make_pair(user_id, tw));
+        message_queue.insert(message_queue.begin(), make_pair(user_id, tw));
         return tw;
     }
 
@@ -35,21 +34,19 @@ public:
         // Write your code here
         vector<Tweet> result;
         
-        set<int> toUsers;
+        unordered_set<int> toUsers;
         if (followmap.find(user_id) != followmap.end()) 
             toUsers = followmap[user_id];
             
         toUsers.insert(user_id);
         
-        for (auto msg : messageQueue)
-        {
-            if (toUsers.count(msg.first))
-            {
+        for (auto msg : message_queue) {
+            if (toUsers.count(msg.first)) {
                 result.push_back(msg.second);
+                if (result.size() >= RecentTweet) break;
             }
         }
-        reverse(result.begin(), result.end());
-        if (result.size() > RecentTweet) result.resize(RecentTweet);
+        
         return result;
     }
         
@@ -59,15 +56,13 @@ public:
     vector<Tweet>  getTimeline(int user_id) {
         // Write your code here
         vector<Tweet> result;
-        for (auto msg : messageQueue)
-        {
-            if (msg.first == user_id) 
-            {
+        for (auto msg : message_queue) {
+            if (msg.first == user_id) {
                 result.push_back(msg.second);
+                if (result.size() >= RecentTweet) break;
             }
         }
-        reverse(result.begin(), result.end());
-        if (result.size() > RecentTweet) result.resize(RecentTweet);
+        
         return result;
     }
 
@@ -76,11 +71,10 @@ public:
     // from user_id follows to_user_id
     void follow(int from_user_id, int to_user_id) {
         // Write your code here
-        if (followmap.find(from_user_id) == followmap.end())
-        {
-            set<int> s;
-            s.insert(to_user_id);
-            followmap[from_user_id] = s;
+        if (followmap.find(from_user_id) == followmap.end()) {
+            unordered_set<int> st;
+            st.insert(to_user_id);
+            followmap[from_user_id] = st;
         }
            
         else followmap[from_user_id].insert(to_user_id);
@@ -97,7 +91,7 @@ public:
     }
     
 private:
-    map<int, set<int>> followmap;
-    vector<pair<int, Tweet>> messageQueue;
+    unordered_map<int, unordered_set<int>> followmap;
+    vector<pair<int, Tweet>> message_queue;
     const int RecentTweet = 10;
 };
