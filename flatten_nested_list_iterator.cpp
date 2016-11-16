@@ -24,8 +24,7 @@ private:
     
 public:
     NestedIterator(vector<NestedInteger> &nestedList) {
-        int size = nestedList.size();
-        for(int i = size - 1; i >= 0; --i) {
+        for(int i = nestedList.size() - 1; i >= 0; --i) {
             nodes.push(nestedList[i]);
         }
     }
@@ -39,15 +38,12 @@ public:
     bool hasNext() {
         while(!nodes.empty()) {
             NestedInteger curr = nodes.top();
-            if(curr.isInteger()) {
-                return true;
-            }
+            if (curr.isInteger()) return true;
             
             nodes.pop();
-            auto adjs = curr.getList();
-            int size = adjs.size();
-            for(int i = size - 1; i >= 0; --i) {
-                nodes.push(adjs[i]);
+            auto list = curr.getList();
+            for(int i = list.size() - 1; i >= 0; --i) {
+                nodes.push(list[i]);
             }
         }
         
