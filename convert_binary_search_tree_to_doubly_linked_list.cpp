@@ -20,6 +20,44 @@
  *     }
  * }
  */
+// iterative
+class Solution {
+public:
+    /**
+     * @param root: The root of tree
+     * @return: the head of doubly list node
+     */
+    DoublyListNode* bstToDoublyList(TreeNode* root) {
+        if (!root) return nullptr;
+        
+        stack<TreeNode*> s;
+        s.push(root);
+        DoublyListNode fakeHead(0), *prev = &fakeHead;
+        auto node = root;
+        
+        while (!s.empty()) {
+            while (node && node->left) {
+                s.push(node->left);
+                node = node->left;
+            }
+            
+            node = s.top();
+            s.pop();
+            auto curr = new DoublyListNode(node->val);
+            prev->next = curr;
+            curr->prev = prev;
+            prev = curr;
+            
+            node = node->right;
+            if (node) s.push(node);
+        }
+        return fakeHead.next;
+    }
+};
+
+
+
+// recursive
 class Solution {
 public:
     /**
