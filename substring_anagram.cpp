@@ -1,3 +1,35 @@
+class Solution {
+public:
+    /**
+     * @param s a string
+     * @param p a non-empty string
+     * @return a list of index
+     */
+    vector<int> findAnagrams(string& s, string& p) {
+        if (s.size() < p.size()) return vector<int>();
+        
+        vector<int> pv(26), sv(26);
+        int len_p = p.size();
+        for (int i = 0; i < len_p; ++i) {
+            pv[p[i]-'a']++;
+            sv[s[i]-'a']++;
+        }
+        
+        vector<int> result;
+        if (pv == sv) result.push_back(0);
+        
+        for (int i = len_p; i < s.size(); ++i) {
+            sv[s[i]-'a']++;
+            sv[s[i-len_p]-'a']--;
+            
+            if (pv == sv) result.push_back(i+1-len_p);
+        }
+        return result;
+    }
+};
+
+
+
 // time out
 class Solution {
 public:
